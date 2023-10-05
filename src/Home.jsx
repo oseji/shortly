@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import workingImg from "./assets/illustration-working.svg";
 import recognitionImg from "./assets/icon-brand-recognition.svg";
 import detailsImg from "./assets/icon-detailed-records.svg";
@@ -8,6 +9,30 @@ import pinterest from "./assets/icon-pinterest.svg";
 import facebook from "./assets/icon-facebook.svg";
 
 const Home = () => {
+  const [url, setUrl] = useState("");
+  const [shortLink, setShortLink] = useState("");
+
+  //console.log(url);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`https://api.shrtco.de/v2/shorten?url=${url}`);
+
+      result.json().then((data) => {
+        console.log(data);
+        setShortLink(data.result.short_link);
+      });
+      //console.log(result);
+    };
+    fetchData();
+    console.log(shortLink);
+  }, [url]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(url);
+  };
+
   return (
     <div className="home">
       {/* FIRST SECTION */}
@@ -33,19 +58,24 @@ const Home = () => {
       </section>
 
       {/* inputLinkContainer */}
-      <form className="inputLinkContainer">
+      <form className="inputLinkContainer" onSubmit={handleSubmit}>
         <input
           type="text"
           className="linkInput"
           placeholder="Shorten a link here..."
+          value={url}
+          onChange={(e) => {
+            setUrl(e.target.value);
+            //console.log(url);
+          }}
           required
         />
         <button
           className="shortenLinkBtn"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log(e);
-          }}
+          // onClick={(e) => {
+          //   e.preventDefault();
+          //   console.log(e);
+          // }}
         >
           Shorten it!
         </button>
@@ -79,7 +109,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="featureContainer">
+          <div className="featureContainer mt-7">
             <img src={detailsImg} alt="details" className="featureImg" />
 
             <div className="featureBox">
@@ -93,7 +123,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="featureContainer">
+          <div className="featureContainer mt-14">
             <img
               src={customizeImg}
               alt="brand recognition"

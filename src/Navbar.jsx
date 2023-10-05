@@ -32,7 +32,7 @@ const Navbar = () => {
         <button className="text-Gray hover:scale-110 transition ease-in-out duration-200">
           Login
         </button>
-        <button className="bg-cyan px-6 py-2 rounded-3xl text-white hover:scale-110 transition ease-in-out duration-200">
+        <button className="bg-cyan px-6 py-2 rounded-3xl text-white hover:scale-110 hover:bg-lightCyan transition ease-in-out duration-200">
           Sign up
         </button>
       </div>
