@@ -37,7 +37,7 @@ const Home = () => {
     <div className="home">
       {/* FIRST SECTION */}
       <section className="firstSection">
-        <div className="textSection w-1/2">
+        <div className="textSection ">
           <h1 className="firstSectionHeading">More than just shorter links</h1>
 
           <p className="text mt-5 w-96">
@@ -109,7 +109,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="featureContainer mt-7">
+          <div className="featureContainer lg:mt-7">
             <img src={detailsImg} alt="details" className="featureImg" />
 
             <div className="featureBox">
@@ -123,7 +123,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="featureContainer mt-14">
+          <div className="featureContainer lg:mt-14">
             <img
               src={customizeImg}
               alt="brand recognition"
