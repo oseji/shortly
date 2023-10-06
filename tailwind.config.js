@@ -26,6 +26,9 @@ export default {
         shortenItDesktop: 'url("./src/assets/bg-shorten-desktop.svg")',
         shortenItMobile: 'url("./src/assets/bg-shorten-mobile.svg")',
       },
+      translate: {
+        120: "500px",
+      },
     },
   },
   plugins: [],

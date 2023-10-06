@@ -1,14 +1,31 @@
 import menu from "./assets/menu.png";
+import { useRef } from "react";
 
 const Navbar = () => {
+  const elementRef = useRef(null);
+
+  const toggleClass = () => {
+    const myElement = elementRef.current;
+    console.log(myElement.classList.toggle("showNav"));
+  };
+
   return (
-    <header>
+    <header
+      onClick={(e) => {
+        console.log(e);
+      }}
+    >
       <div className="logoGrp">
         <div className="logo">Shortly</div>
-        <img src={menu} alt="hamburger menu" className="menu" />
+        <img
+          src={menu}
+          alt="hamburger menu"
+          className="menu"
+          onClick={toggleClass}
+        />
       </div>
 
-      <nav className="navBar">
+      <nav className="navBar showNav" ref={elementRef}>
         <div className="navbarItems">
           <ul className="navList">
             <li className="navText">
@@ -29,7 +46,7 @@ const Navbar = () => {
           </ul>
 
           <div className="loginGrp">
-            <button className="text-Gray hover:scale-110 transition ease-in-out duration-200">
+            <button className="text-white lg:text-Gray hover:scale-110 transition ease-in-out duration-200">
               Login
             </button>
 
