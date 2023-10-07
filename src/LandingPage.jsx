@@ -4,6 +4,7 @@ import recognitionImg from "./assets/icon-brand-recognition.svg";
 import detailsImg from "./assets/icon-detailed-records.svg";
 import customizeImg from "./assets/icon-fully-customizable.svg";
 import instagram from "./assets/icon-instagram.svg";
+import { useRef } from "react";
 import twitter from "./assets/icon-twitter.svg";
 import pinterest from "./assets/icon-pinterest.svg";
 import facebook from "./assets/icon-facebook.svg";
@@ -11,26 +12,59 @@ import facebook from "./assets/icon-facebook.svg";
 const LandingPage = () => {
   const [url, setUrl] = useState("");
   const [shortLink, setShortLink] = useState("");
+  const resultContainerRef = useRef(null);
+  const [copy, setCopy] = useState("Copy");
 
   //console.log(url);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`https://api.shrtco.de/v2/shorten?url=${url}`);
+      try {
+        const result = await fetch(
+          `https://api.shrtco.de/v2/shorten?url=${url}`
+        );
 
-      result.json().then((data) => {
-        console.log(data);
-        setShortLink(data.result.short_link);
-      });
-      //console.log(result);
+        const resultData = result
+          .json()
+          .then((res) => res)
+          .then((data) => {
+            console.log(data);
+            if (data.ok) {
+              setShortLink(data.result.short_link);
+              console.log(shortLink);
+            }
+          });
+        console.log(resultData);
+      } catch {
+        (err) => console.log(err);
+      }
+
+      // const result = await fetch(`https://api.shrtco.de/v2/shorten?url=${url}`);
+
+      // result
+      //   .json()
+      //   .then((data) => {
+      //     console.log(data);
+      //     if (data.ok) {
+      //       setShortLink(data.result.short_link);
+      //       console.log(shortLink);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     //console.log(err);
+      //   });
     };
+
     fetchData();
-    console.log(shortLink);
   }, [url]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(url);
+    //console.log(url);
+
+    const resultContainer = resultContainerRef.current;
+    //console.log(inputContainer);
+    resultContainer.classList.toggle("hideLinkResultContainer");
   };
 
   return (
@@ -82,15 +116,29 @@ const LandingPage = () => {
           </button>
         </form>
 
-        <div className="inputResultsContainer">
+        <div
+          className="inputResultsContainer hideLinkResultContainer"
+          ref={resultContainerRef}
+        >
           <div className="resultContainer">
-            <p className="inputText">
-              https://chat.openai.com/c/93d4941f-f983-4af5-869f-e51538b73217
-            </p>
+            <p className="inputText">{url}</p>
 
             <div className="shortLinkGrp">
-              <p className="shortLink">www.shortly.com</p>
-              <button className="copyResultBtn">Copy</button>
+              <a href={shortLink}>
+                <p className="shortLink">{shortLink}</p>
+              </a>
+
+              <button
+                className="copyResultBtn"
+                onClick={() => {
+                  setCopy("Copied !");
+                  setTimeout(() => {
+                    setCopy("Copy");
+                  }, 1500);
+                }}
+              >
+                {copy}
+              </button>
             </div>
           </div>
         </div>
