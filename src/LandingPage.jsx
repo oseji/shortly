@@ -30,7 +30,7 @@ const LandingPage = () => {
           .then((data) => {
             console.log(data);
             if (data.ok) {
-              setShortLink(data.result.short_link);
+              setShortLink(data.result.full_short_link);
               console.log(shortLink);
             }
           });
