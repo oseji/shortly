@@ -10,6 +10,10 @@ html {
   @apply lg:mt-10;
 }
 
+.landingPage {
+  @apply lg:mt-10;
+}
+
 .text {
   @apply text-Gray;
 }
@@ -23,7 +27,11 @@ html {
 }
 
 .showNav {
-  @apply -translate-x-120 h-0  overflow-hidden lg:h-auto z-10 lg:z-0;
+  @apply -translate-x-120 lg:translate-x-0 h-0 lg:h-auto overflow-hidden z-10 lg:z-0;
+}
+
+.hideLinkResultContainer {
+  @apply hidden;
 }
 
 /* NAVBAR */
@@ -56,7 +64,7 @@ header {
 }
 
 .loginGrp {
-  @apply border-t border-slate-400 pt-10 lg:pt-0 w-full lg:w-auto flex flex-col lg:flex-row gap-3 lg:gap-8 mt-10 lg:mt-0 font-bold lg:font-normal;
+  @apply border-t border-slate-400 lg:border-0 pt-10 lg:pt-0 w-full lg:w-auto flex flex-col lg:flex-row gap-3 lg:gap-8 mt-10 lg:mt-0 font-bold lg:font-normal;
 }
 
 /* FIRST SECTION */
@@ -72,9 +80,41 @@ header {
   @apply text-5xl lg:text-6xl font-bold;
 }
 
+/* SEARCH LINK SECTION  */
+.searchLinkSection {
+  @apply w-full z-10 flex flex-col items-center gap-5 py-10 px-5 lg:px-0 bg-slate-200;
+}
+
+.inputResultsContainer {
+  @apply w-full lg:w-9/12 mx-auto;
+}
+
+.resultContainer {
+  @apply flex flex-col lg:flex-row justify-between items-center bg-white p-5 lg:p-3 rounded-xl text-lg;
+}
+
+.inputText {
+  @apply font-semibold pb-3 lg:pb-0;
+}
+
+.shortLinkGrp {
+  @apply w-full lg:w-auto flex flex-col lg:flex-row gap-3 lg:gap-6 items-center pt-3 lg:pt-0 border-t border-slate-400 lg:border-0;
+}
+
+.shortLink {
+  @apply w-full lg:w-auto text-cyan font-semibold hover:text-lightCyan transition ease-in-out duration-200 cursor-pointer;
+}
+
+.copyResultBtn {
+  @apply w-full lg:w-auto px-6 py-1 rounded-lg bg-cyan hover:bg-lightCyan transition ease-in-out duration-200 font-semibold text-white;
+}
+
 /* inputLinkContainer */
-.inputLinkContainer {
+/* .inputLinkContainer {
   @apply relative top-16 lg:top-14 z-10 w-9/12 flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 mx-auto p-4 lg:p-10 rounded-xl bg-shortenItMobile lg:bg-shortenItDesktop bg-VeryDarkBlue;
+} */
+.inputLinkContainer {
+  @apply w-full lg:w-9/12 flex flex-col lg:flex-row justify-center gap-4 lg:gap-7 mx-auto p-4 lg:p-10 rounded-xl bg-shortenItMobile lg:bg-shortenItDesktop bg-VeryDarkBlue;
 }
 
 .linkInput {
@@ -91,7 +131,7 @@ header {
 
 /* SECOND SECTION */
 .secondSection {
-  @apply relative px-5 lg:px-20 py-36 bg-slate-200;
+  @apply relative px-5 lg:px-20 pb-36 pt-12 bg-slate-200;
 }
 
 .featuresGrp {

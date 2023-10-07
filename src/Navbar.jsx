@@ -2,11 +2,11 @@ import menu from "./assets/menu.png";
 import { useRef } from "react";
 
 const Navbar = () => {
-  const elementRef = useRef(null);
+  const menuRef = useRef(null);
 
   const toggleClass = () => {
-    const myElement = elementRef.current;
-    console.log(myElement.classList.toggle("showNav"));
+    const menu = menuRef.current;
+    console.log(menu.classList.toggle("showNav"));
   };
 
   return (
@@ -25,7 +25,7 @@ const Navbar = () => {
         />
       </div>
 
-      <nav className="navBar showNav" ref={elementRef}>
+      <nav className="navBar showNav" ref={menuRef}>
         <div className="navbarItems">
           <ul className="navList">
             <li className="navText">

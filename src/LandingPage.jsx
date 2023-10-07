@@ -8,7 +8,7 @@ import twitter from "./assets/icon-twitter.svg";
 import pinterest from "./assets/icon-pinterest.svg";
 import facebook from "./assets/icon-facebook.svg";
 
-const Home = () => {
+const LandingPage = () => {
   const [url, setUrl] = useState("");
   const [shortLink, setShortLink] = useState("");
 
@@ -34,7 +34,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home">
+    <div className="landingPage">
       {/* FIRST SECTION */}
       <section className="firstSection">
         <div className="textSection ">
@@ -57,29 +57,44 @@ const Home = () => {
         </div>
       </section>
 
-      {/* inputLinkContainer */}
-      <form className="inputLinkContainer" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="linkInput"
-          placeholder="Shorten a link here..."
-          value={url}
-          onChange={(e) => {
-            setUrl(e.target.value);
-            //console.log(url);
-          }}
-          required
-        />
-        <button
-          className="shortenLinkBtn"
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   console.log(e);
-          // }}
-        >
-          Shorten it!
-        </button>
-      </form>
+      {/* SEARCH LINK SECTION */}
+      <section className="searchLinkSection">
+        <form className="inputLinkContainer" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            className="linkInput"
+            placeholder="Shorten a link here..."
+            value={url}
+            onChange={(e) => {
+              setUrl(e.target.value);
+              //console.log(url);
+            }}
+            required
+          />
+          <button
+            className="shortenLinkBtn"
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   console.log(e);
+            // }}
+          >
+            Shorten it!
+          </button>
+        </form>
+
+        <div className="inputResultsContainer">
+          <div className="resultContainer">
+            <p className="inputText">
+              https://chat.openai.com/c/93d4941f-f983-4af5-869f-e51538b73217
+            </p>
+
+            <div className="shortLinkGrp">
+              <p className="shortLink">www.shortly.com</p>
+              <button className="copyResultBtn">Copy</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* SECOND SECTION */}
       <section className="secondSection">
@@ -201,4 +216,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;
