@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import clipboardCopy from "clipboard-copy";
+import "intersection-observer";
+
 import workingImg from "./assets/illustration-working.svg";
 import recognitionImg from "./assets/icon-brand-recognition.svg";
 import detailsImg from "./assets/icon-detailed-records.svg";
@@ -22,8 +24,19 @@ const LandingPage = () => {
   const inputFieldRef = useRef(null);
   const copyBtnRef = useRef(null);
 
+  const sectionRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+
+  const boxRefs = [useRef(null), useRef(null), useRef(null)];
+
   //console.log(url);
 
+  //handling API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,6 +69,51 @@ const LandingPage = () => {
       }
     }
   }, [url, linkSubmitted]);
+
+  //handling intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (i) => {
+        //console.log(i);
+        i.forEach((item) => {
+          if (item.isIntersecting) {
+            item.target.classList.remove("sectionHidden");
+            item.target.classList.remove("featureContainerTransition");
+          }
+        });
+      },
+      { root: null, threshold: 0.5 }
+    );
+
+    //observe sections
+    sectionRefs.forEach((sectionRef) => {
+      if (sectionRef.current) {
+        observer.observe(sectionRef.current);
+      }
+    });
+
+    //observe featureBoxes
+    boxRefs.forEach((boxRef) => {
+      if (boxRef.current) {
+        observer.observe(boxRef.current);
+      }
+    });
+
+    //Clean up the observer
+    return () => {
+      sectionRefs.forEach((sectionRef) => {
+        if (sectionRef.current) {
+          observer.unobserve(sectionRef.current);
+        }
+      });
+
+      boxRefs.forEach((boxRef) => {
+        if (boxRef.current) {
+          observer.unobserve(boxRef.current);
+        }
+      });
+    };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,7 +160,7 @@ const LandingPage = () => {
   return (
     <div className="landingPage">
       {/* FIRST SECTION */}
-      <section className="firstSection">
+      <section className="firstSection" ref={sectionRefs[0]}>
         <div className="textSection ">
           <h1 className="firstSectionHeading">More than just shorter links</h1>
 
@@ -124,7 +182,7 @@ const LandingPage = () => {
       </section>
 
       {/* SEARCH LINK SECTION */}
-      <section className="searchLinkSection">
+      <section className="searchLinkSection sectionHidden" ref={sectionRefs[1]}>
         <form className="inputLinkContainer" onSubmit={handleSubmit}>
           <div className="linkInputGrp">
             <input
@@ -175,7 +233,7 @@ const LandingPage = () => {
       </section>
 
       {/* SECOND SECTION */}
-      <section className="secondSection">
+      <section className="secondSection sectionHidden" ref={sectionRefs[2]}>
         <h1 className="sectionHeading text-center">Advanced Statistics</h1>
 
         <p className="text-slate-400 font-semibold w-96 text-center mx-auto">
@@ -184,7 +242,10 @@ const LandingPage = () => {
         </p>
 
         <div className="featuresGrp">
-          <div className="featureContainer">
+          <div
+            className="featureContainer featureContainerTransition"
+            ref={boxRefs[0]}
+          >
             <img
               src={recognitionImg}
               alt="brand recognition"
@@ -202,7 +263,10 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div className="featureContainer lg:mt-7">
+          <div
+            className="featureContainer featureContainerTransition lg:mt-7"
+            ref={boxRefs[1]}
+          >
             <img src={detailsImg} alt="details" className="featureImg" />
 
             <div className="featureBox">
@@ -216,7 +280,10 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div className="featureContainer lg:mt-14">
+          <div
+            className="featureContainer featureContainerTransition lg:mt-14"
+            ref={boxRefs[2]}
+          >
             <img
               src={customizeImg}
               alt="brand recognition"
@@ -236,7 +303,7 @@ const LandingPage = () => {
       </section>
 
       {/* THIRD SECTION */}
-      <section className="thirdSection">
+      <section className="thirdSection sectionHidden" ref={sectionRefs[3]}>
         <h1 className="sectionHeading text-center text-white">
           Boost Your Links Today
         </h1>
@@ -247,7 +314,7 @@ const LandingPage = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="footer">
+      <footer className="footer sectionHidden" ref={sectionRefs[4]}>
         <div className="footerCol">
           <p className="text-3xl font-bold">Shortly</p>
         </div>
