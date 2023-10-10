@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import clipboardCopy from "clipboard-copy";
 import workingImg from "./assets/illustration-working.svg";
 import recognitionImg from "./assets/icon-brand-recognition.svg";
 import detailsImg from "./assets/icon-detailed-records.svg";
 import customizeImg from "./assets/icon-fully-customizable.svg";
 import instagram from "./assets/icon-instagram.svg";
 import { useRef } from "react";
+import "intersection-observer";
 import twitter from "./assets/icon-twitter.svg";
 import pinterest from "./assets/icon-pinterest.svg";
 import facebook from "./assets/icon-facebook.svg";
@@ -12,8 +14,13 @@ import facebook from "./assets/icon-facebook.svg";
 const LandingPage = () => {
   const [url, setUrl] = useState("");
   const [shortLink, setShortLink] = useState("");
-  const resultContainerRef = useRef(null);
   const [copy, setCopy] = useState("Copy");
+  const [linkSubmitted, setLinkSubmitted] = useState(false);
+
+  const resultContainerRef = useRef(null);
+  const inputErrTextRef = useRef(null);
+  const inputFieldRef = useRef(null);
+  const copyBtnRef = useRef(null);
 
   //console.log(url);
 
@@ -23,7 +30,6 @@ const LandingPage = () => {
         const result = await fetch(
           `https://api.shrtco.de/v2/shorten?url=${url}`
         );
-
         const resultData = result
           .json()
           .then((res) => res)
@@ -31,40 +37,66 @@ const LandingPage = () => {
             console.log(data);
             if (data.ok) {
               setShortLink(data.result.full_short_link);
-              console.log(shortLink);
             }
           });
         console.log(resultData);
-      } catch {
-        (err) => console.log(err);
+      } catch (err) {
+        console.log(err);
       }
-
-      // const result = await fetch(`https://api.shrtco.de/v2/shorten?url=${url}`);
-
-      // result
-      //   .json()
-      //   .then((data) => {
-      //     console.log(data);
-      //     if (data.ok) {
-      //       setShortLink(data.result.short_link);
-      //       console.log(shortLink);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     //console.log(err);
-      //   });
     };
 
-    fetchData();
-  }, [url]);
+    //fetchData is called only when the link is submitted
+    if (linkSubmitted) {
+      fetchData();
+
+      //if theres no URL then hide the container displaying short link results
+      if (url === "") {
+        const resultContainer = resultContainerRef.current;
+        resultContainer.classList.toggle("hideLinkResultContainer");
+      }
+    }
+  }, [url, linkSubmitted]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(url);
 
     const resultContainer = resultContainerRef.current;
-    //console.log(inputContainer);
     resultContainer.classList.toggle("hideLinkResultContainer");
+    setLinkSubmitted(true);
+  };
+
+  const checkInputField = () => {
+    const inputErr = inputErrTextRef.current;
+    const inputField = inputFieldRef.current;
+    console.log(inputErr, inputField);
+
+    if (url === "") {
+      inputErr.classList.remove("hidden");
+      inputField.classList.add("errInputBorder");
+    } else {
+      inputErr.classList.add("hidden");
+      inputField.classList.remove("errInputBorder");
+    }
+  };
+
+  const handleCopyBtn = (e) => {
+    e.preventDefault();
+    const copyBtn = copyBtnRef.current;
+
+    copyBtn.classList.remove("copyBtnColor");
+    copyBtn.classList.add("copyBtnClicked");
+    setCopy("Copied !");
+
+    setTimeout(() => {
+      setCopy("Copy");
+      copyBtn.classList.add("copyBtnColor");
+      copyBtn.classList.remove("copyBtnClicked");
+    }, 1500);
+
+    //copy the link
+    clipboardCopy(shortLink)
+      .then(alert(`${shortLink} copied to clipboard`))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -94,24 +126,26 @@ const LandingPage = () => {
       {/* SEARCH LINK SECTION */}
       <section className="searchLinkSection">
         <form className="inputLinkContainer" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            className="linkInput"
-            placeholder="Shorten a link here..."
-            value={url}
-            onChange={(e) => {
-              setUrl(e.target.value);
-              //console.log(url);
-            }}
-            required
-          />
-          <button
-            className="shortenLinkBtn"
-            // onClick={(e) => {
-            //   e.preventDefault();
-            //   console.log(e);
-            // }}
-          >
+          <div className="linkInputGrp">
+            <input
+              type="text"
+              className="linkInput"
+              placeholder="Shorten a link here..."
+              value={url}
+              ref={inputFieldRef}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                //console.log(url);
+              }}
+              required
+            />
+
+            <p className="inputErrText hidden" ref={inputErrTextRef}>
+              Please add a link
+            </p>
+          </div>
+
+          <button className="shortenLinkBtn" onClick={checkInputField}>
             Shorten it!
           </button>
         </form>
@@ -129,13 +163,9 @@ const LandingPage = () => {
               </a>
 
               <button
-                className="copyResultBtn"
-                onClick={() => {
-                  setCopy("Copied !");
-                  setTimeout(() => {
-                    setCopy("Copy");
-                  }, 1500);
-                }}
+                className="copyResultBtn copyBtnColor"
+                ref={copyBtnRef}
+                onClick={handleCopyBtn}
               >
                 {copy}
               </button>
@@ -148,7 +178,7 @@ const LandingPage = () => {
       <section className="secondSection">
         <h1 className="sectionHeading text-center">Advanced Statistics</h1>
 
-        <p className="text-slate-500 font-semibold w-96 text-center mx-auto">
+        <p className="text-slate-400 font-semibold w-96 text-center mx-auto">
           Track how your links are performing across the web with our advanced
           statistics dashboard.
         </p>

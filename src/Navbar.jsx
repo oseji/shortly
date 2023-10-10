@@ -46,7 +46,7 @@ const Navbar = () => {
           </ul>
 
           <div className="loginGrp">
-            <button className="text-white lg:text-Gray hover:scale-110 transition ease-in-out duration-200">
+            <button className="text-white lg:text-slate-400 hover:scale-110 transition ease-in-out duration-200">
               Login
             </button>
 
