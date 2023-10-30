@@ -1,5 +1,6 @@
-import menu from "./assets/menu.png";
 import { useRef } from "react";
+import { motion } from "framer-motion";
+import menu from "./assets/menu.png";
 
 const Navbar = () => {
   const menuRef = useRef(null);
@@ -7,6 +8,19 @@ const Navbar = () => {
   const toggleClass = () => {
     const menu = menuRef.current;
     console.log(menu.classList.toggle("showNav"));
+  };
+
+  const navbarVariants = {
+    hidden: {
+      y: -100,
+    },
+    visible: {
+      y: 0,
+    },
+    animation: {
+      duration: 0.5,
+      type: "tween",
+    },
   };
 
   return (
@@ -25,7 +39,17 @@ const Navbar = () => {
         />
       </div>
 
-      <nav className="navBar showNav" ref={menuRef}>
+      <motion.nav
+        className="navBar showNav"
+        ref={menuRef}
+        variants={navbarVariants}
+        initial="hidden"
+        animate="visible"
+        transition="animation"
+        // initial={{ y: -100 }}
+        // animate={{ y: 0 }}
+        // transition={{ duration: 0.5, type: "tween" }}
+      >
         <div className="navbarItems">
           <ul className="navList">
             <li className="navText">
@@ -55,7 +79,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
     </header>
   );
 };

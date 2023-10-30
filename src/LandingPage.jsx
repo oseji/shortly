@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { animate, motion } from "framer-motion";
 import clipboardCopy from "clipboard-copy";
 import "intersection-observer";
 
@@ -81,10 +82,10 @@ const LandingPage = () => {
             item.target.classList.remove("featureContainerTransition");
           }
 
-          if (!item.isIntersecting) {
-            item.target.classList.add("sectionHidden");
-            item.target.classList.add("featureContainerTransition");
-          }
+          // if (!item.isIntersecting) {
+          //   item.target.classList.add("sectionHidden");
+          //   item.target.classList.add("featureContainerTransition");
+          // }
         });
       },
       { root: null, threshold: 0.2 }
@@ -166,7 +167,12 @@ const LandingPage = () => {
     <div className="landingPage">
       {/* FIRST SECTION */}
       <section className="firstSection" ref={sectionRefs[0]}>
-        <div className="textSection ">
+        <motion.div
+          className="textSection"
+          initial={{ x: "-100vw", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <h1 className="firstSectionHeading">More than just shorter links</h1>
 
           <p className="text mt-5 w-96">
@@ -175,15 +181,20 @@ const LandingPage = () => {
           </p>
 
           <button className="getStartedBtn mt-5">Get started</button>
-        </div>
+        </motion.div>
 
-        <div className="imgSection">
+        <motion.div
+          className="imgSection"
+          initial={{ x: "100vw", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <img
             src={workingImg}
             alt="working illustration"
             className="workingImg"
           />
-        </div>
+        </motion.div>
       </section>
 
       {/* SEARCH LINK SECTION */}
