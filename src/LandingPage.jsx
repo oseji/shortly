@@ -80,6 +80,11 @@ const LandingPage = () => {
             item.target.classList.remove("sectionHidden");
             item.target.classList.remove("featureContainerTransition");
           }
+
+          if (!item.isIntersecting) {
+            item.target.classList.add("sectionHidden");
+            item.target.classList.add("featureContainerTransition");
+          }
         });
       },
       { root: null, threshold: 0.2 }
